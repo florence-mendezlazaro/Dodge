@@ -1,11 +1,16 @@
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class GameManager : MonoBehaviour
 {
     [Header("DefaultUI")]
     [SerializeField] private GameObject default_ui;
     [SerializeField] private Button pause_button;
+    [SerializeField] private TextMeshProUGUI tmp_timer;
+    private float timer = 0f;
+    [SerializeField] private TextMeshProUGUI tmp_score;
+    private int score = 0;
 
     [Header("PauseMenu")]
     [SerializeField] private GameObject pause_menu;
@@ -21,10 +26,17 @@ public class GameManager : MonoBehaviour
 
         default_ui.SetActive(true);
         pause_button.onClick.AddListener(() => GamePaused());
+        tmp_timer.text = timer.ToString();
 
         pause_menu.SetActive(false);
         resume_button.onClick.AddListener(() => GamePaused());
         quit_button.onClick.AddListener(() => Debug.Log("Transition To Main Menu"));
+    }
+
+    private void Update()
+    {
+        timer += Time.deltaTime;
+        tmp_timer.text = timer.ToString();
     }
 
     private void GamePaused()
@@ -47,5 +59,11 @@ public class GameManager : MonoBehaviour
 
             Time.timeScale = 0f;
         }
+    }
+
+    public void AddToScore(int value)
+    {
+        score += value;
+        tmp_score.text = score.ToString();
     }
 }
